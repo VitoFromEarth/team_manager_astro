@@ -4,9 +4,9 @@ import {supabase} from "@infrastructure/supabase/supabase.ts";
 import {getCurrentUser} from "../infrastructure/helpers/auth";
 
 function logout() {
-    Astro.cookies.delete("sb-access-token", {
-        path: "/",
-    });
+	Astro.cookies.delete("sb-access-token", {
+		path: "/",
+	});
 	Astro.cookies.delete("sb-refresh-token", {
 		path: "/",
 	});
@@ -27,9 +27,9 @@ try {
 const email = userData?.email;
 ---
 <Layout title="dashboard">
-    <h1>Welcome {email}</h1>
-    <p>We are happy to see you here</p>
-    <form action="/api/auth/signout">
-        <button type="submit">Sign out</button>
-    </form>
+	<h1>Welcome {email}</h1>
+	<p>We are happy to see you here</p>
+	<form action="/api/auth/signout">
+		<button type="submit">Sign out</button>
+	</form>
 </Layout>
