@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Button } from "@/components/ui/button"
 
 const { cookies, redirect } = Astro;
 
@@ -19,7 +20,7 @@ if (accessToken && refreshToken) {
         <input type="email" name="email" id="email" />
         <label for="password">Password</label>
         <input type="password" name="password" id="password" />
-        <button type="submit">Login</button>
-        <button value="google" name="provider" type="submit">Sign in with Google</button>
+        <Button type="submit">Login</Button>
+        <Button value="google" name="provider" type="submit">Sign in with Google</Button>
     </form>
 </Layout>
