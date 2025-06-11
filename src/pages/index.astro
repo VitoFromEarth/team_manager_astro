@@ -7,21 +7,21 @@ function logout() {
     Astro.cookies.delete("sb-access-token", {
         path: "/",
     });
-    Astro.cookies.delete("sb-refresh-token", {
-        path: "/",
-    });
-    return Astro.redirect("/signin");
+	Astro.cookies.delete("sb-refresh-token", {
+		path: "/",
+	});
+	return Astro.redirect("/signin");
 }
 
 let userData;
 
 try {
-    userData = await getCurrentUser(supabase);
-    if (!userData) {
-        return logout();
-    }
+	userData = await getCurrentUser(supabase);
+	if (!userData) {
+		return logout();
+	}
 } catch (error) {
-    return logout();
+	return logout();
 }
 
 const email = userData?.email;
