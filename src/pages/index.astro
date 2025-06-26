@@ -1,7 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import {supabase} from "@infrastructure/supabase/supabase.ts";
-import {getCurrentUser} from "../infrastructure/helpers/auth";
+import { supabase } from "@infrastructure/supabase/supabase.ts";
+import { getCurrentUser } from "@infrastructure/helpers/auth";
+import { getStats } from "./api/dashboard/get-stats";
+import type { TeamStatistics } from "./api/dashboard/repository";
 
 function logout() {
 	Astro.cookies.delete("sb-access-token", {
@@ -24,12 +26,34 @@ try {
 	return logout();
 }
 
+let activeTeamMembersTotal = 0;
+let activeProjectsTotal = 0;
+let pendingCandidatesTotal = 0;
+
+try {
+	const { teamStatistics, error } = await getStats();
+
+	if (error) {
+		console.error({ error });
+	}
+
+	activeTeamMembersTotal =
+		teamStatistics?.reduce((acc: number, stat: TeamStatistics) => acc + stat.hired_count, 0) ?? 0;
+	activeProjectsTotal =
+		teamStatistics?.reduce((acc: number, stat: TeamStatistics) => acc + stat.projects.length, 0) ?? 0;
+	pendingCandidatesTotal =
+		teamStatistics?.reduce((acc: number, stat: TeamStatistics) => acc + stat.pending_or_passed_count, 0) ?? 0;
+} catch (error) {
+	console.error({ error });
+}
+
 const email = userData?.email;
 ---
+
 <Layout title="dashboard">
 	<h1>Welcome {email}</h1>
-	<p>We are happy to see you here</p>
-	<form action="/api/auth/signout">
-		<button type="submit">Sign out</button>
-	</form>
+	<h1 class="mb-8 text-2xl font-bold text-gray-900 dark:text-gray-200">Dashboard</h1>
+	<div>Active team members: {activeTeamMembersTotal}</div>
+	<div>Active projects: {activeProjectsTotal}</div>
+	<div>Pending candidates: {pendingCandidatesTotal}</div>
 </Layout>

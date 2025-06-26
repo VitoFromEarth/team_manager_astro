@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import {supabase} from "@infrastructure/supabase/supabase.ts";
+import { supabase } from "@infrastructure/supabase/supabase.ts";
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
 	const authCode = url.searchParams.get("code");
@@ -19,6 +19,7 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
 	cookies.set("sb-access-token", access_token, {
 		path: "/",
 	});
+
 	cookies.set("sb-refresh-token", refresh_token, {
 		path: "/",
 	});
